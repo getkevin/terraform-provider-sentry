@@ -2,8 +2,6 @@ package sentryclient
 
 import (
 	"context"
-
-	"github.com/jianyuan/go-sentry/v2/sentry"
 )
 
 func GetProjectIdToSlugMap(ctx context.Context, client *sentry.Client) (map[string]string, error) {

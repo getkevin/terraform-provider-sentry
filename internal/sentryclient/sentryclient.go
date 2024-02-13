@@ -2,12 +2,12 @@ package sentryclient
 
 import (
 	"context"
+	sentry "github.com/getkevin/terraform-provider-sentry/sentry/lib"
 	"net/http"
 	"sync"
 	"time"
 
 	"github.com/hashicorp/go-retryablehttp"
-	"github.com/jianyuan/go-sentry/v2/sentry"
 	"golang.org/x/oauth2"
 	"golang.org/x/sync/semaphore"
 )

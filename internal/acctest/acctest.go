@@ -2,11 +2,10 @@ package acctest
 
 import (
 	"context"
+	"github.com/getkevin/terraform-provider-sentry/internal/sentryclient"
+	sentry "github.com/getkevin/terraform-provider-sentry/sentry/lib"
 	"os"
 	"testing"
-
-	"github.com/jianyuan/go-sentry/v2/sentry"
-	"github.com/jianyuan/terraform-provider-sentry/internal/sentryclient"
 )
 
 const (

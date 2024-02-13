@@ -2,8 +2,7 @@ package provider
 
 import (
 	"fmt"
-
-	"github.com/jianyuan/terraform-provider-sentry/internal/acctest"
+	"github.com/getkevin/terraform-provider-sentry/internal/acctest"
 )
 
 var testAccOrganizationDataSourceConfig = fmt.Sprintf(`

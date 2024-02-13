@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/getkevin/terraform-provider-sentry/internal/sentryclient"
+	sentry "github.com/getkevin/terraform-provider-sentry/sentry/lib"
 	"net/http"
 	"strconv"
 
@@ -16,8 +18,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/jianyuan/go-sentry/v2/sentry"
-	"github.com/jianyuan/terraform-provider-sentry/internal/sentryclient"
 )
 
 var _ resource.Resource = &NotificationActionResource{}

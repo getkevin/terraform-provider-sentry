@@ -4,13 +4,13 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/getkevin/terraform-provider-sentry/internal/sentrytypes"
+	sentry "github.com/getkevin/terraform-provider-sentry/sentry/lib"
 	"net/http"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/jianyuan/go-sentry/v2/sentry"
-	"github.com/jianyuan/terraform-provider-sentry/internal/sentrytypes"
 )
 
 var _ datasource.DataSource = &IssueAlertDataSource{}

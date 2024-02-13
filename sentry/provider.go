@@ -2,10 +2,10 @@ package sentry
 
 import (
 	"context"
+	"github.com/getkevin/terraform-provider-sentry/internal/sentryclient"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/jianyuan/terraform-provider-sentry/internal/sentryclient"
 )
 
 func init() {

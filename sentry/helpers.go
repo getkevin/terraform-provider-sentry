@@ -3,12 +3,12 @@ package sentry
 import (
 	"encoding/json"
 	"fmt"
+	sentry "github.com/getkevin/terraform-provider-sentry/sentry/lib"
 	"net/http"
 	"reflect"
 	"strings"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/jianyuan/go-sentry/v2/sentry"
 )
 
 func buildTwoPartID(a, b string) string {

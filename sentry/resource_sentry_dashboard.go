@@ -2,6 +2,7 @@ package sentry
 
 import (
 	"context"
+	sentry "github.com/getkevin/terraform-provider-sentry/sentry/lib"
 	"net/http"
 
 	"github.com/hashicorp/go-multierror"
@@ -9,7 +10,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
-	"github.com/jianyuan/go-sentry/v2/sentry"
 )
 
 func resourceSentryDashboard() *schema.Resource {

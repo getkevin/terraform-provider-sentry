@@ -2,10 +2,10 @@ package provider
 
 import (
 	"fmt"
+	"github.com/getkevin/terraform-provider-sentry/internal/acctest"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/jianyuan/terraform-provider-sentry/internal/acctest"
 )
 
 func TestAccProjectSpikeProtectionResource(t *testing.T) {

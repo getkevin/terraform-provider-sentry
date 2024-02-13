@@ -3,11 +3,11 @@ package provider
 import (
 	"context"
 	"fmt"
+	sentry "github.com/getkevin/terraform-provider-sentry/sentry/lib"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/jianyuan/go-sentry/v2/sentry"
 )
 
 var _ datasource.DataSource = &OrganizationMemberDataSource{}

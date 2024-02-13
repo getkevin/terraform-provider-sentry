@@ -2,10 +2,10 @@ package sentry
 
 import (
 	"fmt"
+	"github.com/getkevin/terraform-provider-sentry/internal/acctest"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
-	"github.com/jianyuan/terraform-provider-sentry/internal/acctest"
 )
 
 func TestAccSentryMetricAlertDataSource_basic(t *testing.T) {

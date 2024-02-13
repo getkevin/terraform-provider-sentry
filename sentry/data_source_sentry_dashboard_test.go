@@ -2,10 +2,9 @@ package sentry
 
 import (
 	"fmt"
-	"testing"
-
+	"github.com/getkevin/terraform-provider-sentry/internal/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
-	"github.com/jianyuan/terraform-provider-sentry/internal/acctest"
+	"testing"
 )
 
 func TestAccSentryDashboardDataSource_basic(t *testing.T) {

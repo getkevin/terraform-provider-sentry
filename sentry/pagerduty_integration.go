@@ -2,10 +2,10 @@ package sentry
 
 import (
 	"context"
+	sentry "github.com/getkevin/terraform-provider-sentry/sentry/lib"
 	"github.com/hashicorp/go-multierror"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	sentry "github.com/kevineu/terraform-provider-sentry/sentry/lib"
 	"strconv"
 )
 

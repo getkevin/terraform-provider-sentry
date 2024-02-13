@@ -47,23 +47,27 @@ type Client struct {
 	common service
 
 	// Services
-	DashboardWidgets         *DashboardWidgetsService
-	Dashboards               *DashboardsService
-	IssueAlerts              *IssueAlertsService
-	MetricAlerts             *MetricAlertsService
-	OrganizationCodeMappings *OrganizationCodeMappingsService
-	OrganizationIntegrations *OrganizationIntegrationsService
-	OrganizationMembers      *OrganizationMembersService
-	OrganizationRepositories *OrganizationRepositoriesService
-	Organizations            *OrganizationsService
-	ProjectKeys              *ProjectKeysService
-	ProjectOwnerships        *ProjectOwnershipsService
-	ProjectPlugins           *ProjectPluginsService
-	Projects                 *ProjectsService
-	ProjectFilter            *ProjectFilterService
-	ReleaseDeployments       *ReleaseDeploymentsService
-	Teams                    *TeamsService
-	Pagerduty                *PagerdutyService
+	Dashboards                *DashboardsService
+	DashboardWidgets          *DashboardWidgetsService
+	IssueAlerts               *IssueAlertsService
+	MetricAlerts              *MetricAlertsService
+	NotificationActions       *NotificationActionsService
+	OrganizationCodeMappings  *OrganizationCodeMappingsService
+	OrganizationIntegrations  *OrganizationIntegrationsService
+	OrganizationMembers       *OrganizationMembersService
+	OrganizationRepositories  *OrganizationRepositoriesService
+	Organizations             *OrganizationsService
+	ProjectFilters            *ProjectFiltersService
+	ProjectInboundDataFilters *ProjectInboundDataFiltersService
+	ProjectKeys               *ProjectKeysService
+	ProjectOwnerships         *ProjectOwnershipsService
+	ProjectPlugins            *ProjectPluginsService
+	Projects                  *ProjectsService
+	ProjectSymbolSources      *ProjectSymbolSourcesService
+	ReleaseDeployments        *ReleaseDeploymentsService
+	SpikeProtections          *SpikeProtectionsService
+	TeamMembers               *TeamMembersService
+	Teams                     *TeamsService
 }
 
 type service struct {
@@ -84,23 +88,27 @@ func NewClient(httpClient *http.Client) *Client {
 		UserAgent: userAgent,
 	}
 	c.common.client = c
-	c.DashboardWidgets = (*DashboardWidgetsService)(&c.common)
 	c.Dashboards = (*DashboardsService)(&c.common)
+	c.DashboardWidgets = (*DashboardWidgetsService)(&c.common)
 	c.IssueAlerts = (*IssueAlertsService)(&c.common)
 	c.MetricAlerts = (*MetricAlertsService)(&c.common)
+	c.NotificationActions = (*NotificationActionsService)(&c.common)
 	c.OrganizationCodeMappings = (*OrganizationCodeMappingsService)(&c.common)
 	c.OrganizationIntegrations = (*OrganizationIntegrationsService)(&c.common)
 	c.OrganizationMembers = (*OrganizationMembersService)(&c.common)
 	c.OrganizationRepositories = (*OrganizationRepositoriesService)(&c.common)
 	c.Organizations = (*OrganizationsService)(&c.common)
-	c.ProjectFilter = (*ProjectFilterService)(&c.common)
+	c.ProjectFilters = (*ProjectFiltersService)(&c.common)
+	c.ProjectInboundDataFilters = (*ProjectInboundDataFiltersService)(&c.common)
 	c.ProjectKeys = (*ProjectKeysService)(&c.common)
 	c.ProjectOwnerships = (*ProjectOwnershipsService)(&c.common)
 	c.ProjectPlugins = (*ProjectPluginsService)(&c.common)
 	c.Projects = (*ProjectsService)(&c.common)
+	c.ProjectSymbolSources = (*ProjectSymbolSourcesService)(&c.common)
 	c.ReleaseDeployments = (*ReleaseDeploymentsService)(&c.common)
+	c.SpikeProtections = (*SpikeProtectionsService)(&c.common)
+	c.TeamMembers = (*TeamMembersService)(&c.common)
 	c.Teams = (*TeamsService)(&c.common)
-	c.Pagerduty = (*PagerdutyService)(&c.common)
 	return c
 }
 
@@ -434,15 +442,6 @@ func Float64Value(v *float64) float64 {
 // String returns a pointer to the string value passed in.
 func String(v string) *string { return &v }
 
-func InterfaceString(v string) *interface{} {
-	var i interface{} = v
-	return &i
-}
-func InterfaceNumber(v json.Number) *interface{} {
-	var i interface{} = v
-	return &i
-}
-
 // StringValue returns the value of the string pointer passed in or
 // "" if the pointer is nil.
 func StringValue(v *string) string {
@@ -462,4 +461,16 @@ func TimeValue(v *time.Time) time.Time {
 		return *v
 	}
 	return time.Time{}
+}
+
+// JsonNumber returns a pointer to the json.Number value passed in.
+func JsonNumber(v json.Number) *json.Number { return &v }
+
+// JsonNumberValue returns the value of the json.Number pointer passed in or
+// json.Number("") if the pointer is nil.
+func JsonNumberValue(v *json.Number) json.Number {
+	if v != nil {
+		return *v
+	}
+	return json.Number("")
 }

@@ -94,8 +94,13 @@ type ProjectsService service
 
 // List projects available.
 // https://docs.sentry.io/api/projects/list-your-projects/
-func (s *ProjectsService) List(ctx context.Context) ([]*Project, *Response, error) {
+func (s *ProjectsService) List(ctx context.Context, params *ListCursorParams) ([]*Project, *Response, error) {
 	u := "0/projects/"
+	u, err := addQuery(u, params)
+	if err != nil {
+		return nil, nil, err
+	}
+
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
@@ -128,9 +133,10 @@ func (s *ProjectsService) Get(ctx context.Context, organizationSlug string, slug
 
 // CreateProjectParams are the parameters for ProjectService.Create.
 type CreateProjectParams struct {
-	Name     string `json:"name,omitempty"`
-	Slug     string `json:"slug,omitempty"`
-	Platform string `json:"platform,omitempty"`
+	Name         string `json:"name,omitempty"`
+	Slug         string `json:"slug,omitempty"`
+	Platform     string `json:"platform,omitempty"`
+	DefaultRules *bool  `json:"default_rules,omitempty"`
 }
 
 // Create a new project bound to a team.

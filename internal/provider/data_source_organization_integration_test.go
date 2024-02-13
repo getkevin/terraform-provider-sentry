@@ -1,10 +1,10 @@
 package provider
 
 import (
+	"github.com/getkevin/terraform-provider-sentry/internal/acctest"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/jianyuan/terraform-provider-sentry/internal/acctest"
 )
 
 func TestAccOrganizationIntegrationDataSource(t *testing.T) {
@@ -21,7 +21,7 @@ func TestAccOrganizationIntegrationDataSource(t *testing.T) {
 					resource.TestCheckResourceAttrPair(dn, "internal_id", dn, "id"),
 					resource.TestCheckResourceAttr(dn, "organization", acctest.TestOrganization),
 					resource.TestCheckResourceAttr(dn, "provider_key", "github"),
-					resource.TestCheckResourceAttr(dn, "name", "jianyuan"),
+					resource.TestCheckResourceAttr(dn, "name", "getkevin"),
 				),
 			},
 		},
@@ -37,7 +37,7 @@ func TestAccOrganizationIntegrationDataSource_MigrateFromPluginSDK(t *testing.T)
 			{
 				ExternalProviders: map[string]resource.ExternalProvider{
 					acctest.ProviderName: {
-						Source:            "jianyuan/sentry",
+						Source:            "getkevin/sentry",
 						VersionConstraint: "0.11.2",
 					},
 				},
@@ -47,7 +47,7 @@ func TestAccOrganizationIntegrationDataSource_MigrateFromPluginSDK(t *testing.T)
 					resource.TestCheckResourceAttrPair(dn, "internal_id", dn, "id"),
 					resource.TestCheckResourceAttr(dn, "organization", acctest.TestOrganization),
 					resource.TestCheckResourceAttr(dn, "provider_key", "github"),
-					resource.TestCheckResourceAttr(dn, "name", "jianyuan"),
+					resource.TestCheckResourceAttr(dn, "name", "getkevin"),
 				),
 			},
 			{
@@ -63,6 +63,6 @@ var testAccOrganizationIntegrationDataSourceConfig = testAccOrganizationDataSour
 data "sentry_organization_integration" "test" {
 	organization = data.sentry_organization.test.id
 	provider_key = "github"
-	name         = "jianyuan"
+	name         = "getkevin"
 }
 `

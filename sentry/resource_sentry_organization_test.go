@@ -4,13 +4,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/getkevin/terraform-provider-sentry/internal/acctest"
+	sentry "github.com/getkevin/terraform-provider-sentry/sentry/lib"
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
-	"github.com/jianyuan/go-sentry/v2/sentry"
-	"github.com/jianyuan/terraform-provider-sentry/internal/acctest"
 )
 
 func TestAccSentryOrganization_basic(t *testing.T) {

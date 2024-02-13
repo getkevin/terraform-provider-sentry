@@ -2,15 +2,15 @@ package sentry
 
 import (
 	"context"
+	"github.com/getkevin/terraform-provider-sentry/internal/acctest"
+	"github.com/getkevin/terraform-provider-sentry/internal/pkg/must"
+	"github.com/getkevin/terraform-provider-sentry/internal/provider"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 	"github.com/hashicorp/terraform-plugin-mux/tf5to6server"
 	"github.com/hashicorp/terraform-plugin-mux/tf6muxserver"
-	"github.com/jianyuan/terraform-provider-sentry/internal/acctest"
-	"github.com/jianyuan/terraform-provider-sentry/internal/pkg/must"
-	"github.com/jianyuan/terraform-provider-sentry/internal/provider"
 )
 
 var testAccProtoV6ProviderFactories = map[string]func() (tfprotov6.ProviderServer, error){

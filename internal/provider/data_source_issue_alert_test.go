@@ -3,12 +3,12 @@ package provider
 import (
 	"context"
 	"fmt"
+	"github.com/getkevin/terraform-provider-sentry/internal/acctest"
+	"github.com/getkevin/terraform-provider-sentry/internal/sentrytypes"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
-	"github.com/jianyuan/terraform-provider-sentry/internal/acctest"
-	"github.com/jianyuan/terraform-provider-sentry/internal/sentrytypes"
 )
 
 func TestAccIssueAlertDataSource(t *testing.T) {

@@ -4,12 +4,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/getkevin/terraform-provider-sentry/internal/acctest"
+	sentry "github.com/getkevin/terraform-provider-sentry/sentry/lib"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
-	"github.com/jianyuan/go-sentry/v2/sentry"
-	"github.com/jianyuan/terraform-provider-sentry/internal/acctest"
 )
 
 func TestAccIssueAlertResource(t *testing.T) {
@@ -83,7 +83,7 @@ func TestAccIssueAlertResource_MigrateFromPluginSDK(t *testing.T) {
 			{
 				ExternalProviders: map[string]resource.ExternalProvider{
 					acctest.ProviderName: {
-						Source:            "jianyuan/sentry",
+						Source:            "getkevin/sentry",
 						VersionConstraint: "0.11.2",
 					},
 				},

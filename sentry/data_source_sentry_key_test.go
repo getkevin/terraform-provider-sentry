@@ -2,12 +2,12 @@ package sentry
 
 import (
 	"fmt"
+	"github.com/getkevin/terraform-provider-sentry/internal/acctest"
 	"regexp"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
-	"github.com/jianyuan/terraform-provider-sentry/internal/acctest"
 )
 
 func TestAccSentryKeyDataSource_basic(t *testing.T) {
