@@ -88,7 +88,7 @@ Below is a full example showcasing typical usage:
 terraform {
   required_providers {
     sentry = {
-      source = "jianyuan/sentry"
+      source = "getkevin/sentry"
     }
   }
 }
