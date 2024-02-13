@@ -2,6 +2,7 @@ package sentryclient
 
 import (
 	"context"
+	sentry "github.com/getkevin/terraform-provider-sentry/sentry/lib"
 )
 
 func GetProjectIdToSlugMap(ctx context.Context, client *sentry.Client) (map[string]string, error) {
