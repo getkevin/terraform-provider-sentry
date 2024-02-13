@@ -68,6 +68,7 @@ type Client struct {
 	SpikeProtections          *SpikeProtectionsService
 	TeamMembers               *TeamMembersService
 	Teams                     *TeamsService
+	Pagerduty                 *PagerdutyService
 }
 
 type service struct {
@@ -109,6 +110,8 @@ func NewClient(httpClient *http.Client) *Client {
 	c.SpikeProtections = (*SpikeProtectionsService)(&c.common)
 	c.TeamMembers = (*TeamMembersService)(&c.common)
 	c.Teams = (*TeamsService)(&c.common)
+	c.Pagerduty = (*PagerdutyService)(&c.common)
+
 	return c
 }
 
