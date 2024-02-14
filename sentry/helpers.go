@@ -3,11 +3,11 @@ package sentry
 import (
 	"encoding/json"
 	"fmt"
-	sentry "github.com/getkevin/terraform-provider-sentry/sentry/lib"
 	"net/http"
 	"reflect"
 	"strings"
 
+	"github.com/deste-org/terraform-provider-sentry/sentry/lib"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 

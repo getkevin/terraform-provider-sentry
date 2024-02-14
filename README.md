@@ -1,6 +1,6 @@
 # Terraform Provider Sentry
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/getkevin/terraform-provider-sentry)](https://goreportcard.com/report/github.com/jianyuan/terraform-provider-sentry)
+[![Go Report Card](https://goreportcard.com/badge/github.com/jianyuan/terraform-provider-sentry)](https://goreportcard.com/report/github.com/jianyuan/terraform-provider-sentry)
 
 <a href="https://sentry.io/?utm_source=terraform&utm_medium=docs" target="_blank">
     <img src="templates/sentry-wordmark-dark-280x84.svg" alt="Sentry" width="280">
@@ -14,13 +14,11 @@ The Terraform provider for [Sentry](https://sentry.io/?utm_source=terraform&utm_
 
 ## Usage
 
-Detailed documentation is available on the [Terraform provider registry](https://registry.terraform.io/providers/getkevin/sentry/latest).
+Detailed documentation is available on the [Terraform provider registry](https://registry.terraform.io/providers/jianyuan/sentry/latest).
 
 ## Development
 
-If you wish to work on the provider, you will need to install [Go](https://go.dev/doc/install) (We use >= 1.21) on your machine.
-
-We are currently in the process of migrating from the Terraform Plugin SDKv2 to the [Terraform Plugin Framework](https://github.com/hashicorp/terraform-plugin-framework). As part of this transition, any future resources and data sources should be implemented using the Terraform Plugin Framework, located in the `internal/provider` directory.
+If you wish to work on the provider, you will need to install [Go](https://go.dev/doc/install) (We use >= 1.18) on your machine.
 
 ### Test
 

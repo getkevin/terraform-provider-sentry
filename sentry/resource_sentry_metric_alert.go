@@ -3,10 +3,9 @@ package sentry
 import (
 	"context"
 	"fmt"
-	sentry "github.com/getkevin/terraform-provider-sentry/sentry/lib"
 	"net/http"
-	"strconv"
 
+	"github.com/deste-org/terraform-provider-sentry/sentry/lib"
 	"github.com/hashicorp/go-multierror"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
@@ -115,11 +114,6 @@ func resourceSentryMetricAlert() *schema.Resource {
 									"target_identifier": {
 										Type:     schema.TypeString,
 										Optional: true,
-									},
-									"input_channel_id": {
-										Type:        schema.TypeString,
-										Optional:    true,
-										Description: "Slack channel ID to avoid rate-limiting, see [here](https://docs.sentry.io/product/integrations/notification-incidents/slack/#rate-limiting-error)",
 									},
 									"integration_id": {
 										Type:     schema.TypeInt,
@@ -354,12 +348,7 @@ func expandMetricAlertTriggerActions(actionList []interface{}) []*sentry.MetricA
 		}
 		if v, ok := actionMap["target_identifier"].(string); ok {
 			if v != "" {
-				action.TargetIdentifier = &sentry.Int64OrString{IsString: true, StringVal: v}
-			}
-		}
-		if v, ok := actionMap["input_channel_id"].(string); ok {
-			if v != "" {
-				action.InputChannelID = sentry.String(v)
+				action.TargetIdentifier = sentry.InterfaceString(v)
 			}
 		}
 		if v, ok := actionMap["integration_id"].(int); ok {
@@ -402,14 +391,7 @@ func flattenMetricAlertTriggerActions(actions []*sentry.MetricAlertTriggerAction
 		actionMap["id"] = action.ID
 		actionMap["type"] = action.Type
 		actionMap["target_type"] = action.TargetType
-		if action.TargetIdentifier != nil {
-			if action.TargetIdentifier.IsInt64 {
-				actionMap["target_identifier"] = strconv.FormatInt(action.TargetIdentifier.Int64Val, 10)
-			} else {
-				actionMap["target_identifier"] = action.TargetIdentifier.StringVal
-			}
-		}
-		actionMap["input_channel_id"] = action.InputChannelID
+		actionMap["target_identifier"] = action.TargetIdentifier
 		actionMap["integration_id"] = action.IntegrationID
 
 		actionList = append(actionList, actionMap)

@@ -2,10 +2,10 @@ package sentry
 
 import (
 	"fmt"
-	"github.com/getkevin/terraform-provider-sentry/internal/acctest"
-	sentry "github.com/getkevin/terraform-provider-sentry/sentry/lib"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"testing"
+
+	"github.com/deste-org/terraform-provider-sentry/sentry/lib"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
 func TestAccSentryOrganizationDataSource_basic(t *testing.T) {
@@ -14,15 +14,15 @@ func TestAccSentryOrganizationDataSource_basic(t *testing.T) {
 	rn := "data.sentry_organization.test"
 
 	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { acctest.PreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactories,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccSentryOrganizationDataSourceConfig,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckSentryOrganizationExists(rn, &organization),
 					resource.TestCheckResourceAttrSet(rn, "name"),
-					resource.TestCheckResourceAttr(rn, "slug", acctest.TestOrganization),
+					resource.TestCheckResourceAttr(rn, "slug", testOrganization),
 					resource.TestCheckResourceAttrWith(rn, "internal_id", func(v string) error {
 						want := sentry.StringValue(organization.ID)
 						if v != want {
@@ -40,4 +40,4 @@ var testAccSentryOrganizationDataSourceConfig = fmt.Sprintf(`
 data "sentry_organization" "test" {
 	slug = "%s"
 }
-`, acctest.TestOrganization)
+`, testOrganization)

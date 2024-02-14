@@ -4,10 +4,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	sentry "github.com/getkevin/terraform-provider-sentry/sentry/lib"
 	"net/http"
 	"strings"
 
+	"github.com/deste-org/terraform-provider-sentry/sentry/lib"
 	"github.com/hashicorp/go-cty/cty"
 	"github.com/hashicorp/go-multierror"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
@@ -67,18 +67,6 @@ func resourceSentryProject() *schema.Resource {
 				Optional:         true,
 				Computed:         true,
 				ValidateDiagFunc: validatePlatform,
-			},
-			"default_rules": {
-				Description: "Whether to create a default issue alert. Defaults to true where the behavior is to alert the user on every new issue.",
-				Type:        schema.TypeBool,
-				Optional:    true,
-				Default:     true,
-			},
-			"default_key": {
-				Description: "Whether to create a default key. By default, Sentry will create a key for you. If you wish to manage keys manually, set this to false and create keys using the `sentry_key` resource.",
-				Type:        schema.TypeBool,
-				Optional:    true,
-				Default:     true,
 			},
 			"internal_id": {
 				Description: "The internal ID for this project.",
@@ -164,17 +152,11 @@ func resourceSentryProjectCreate(ctx context.Context, d *schema.ResourceData, me
 		Slug: d.Get("slug").(string),
 	}
 
-	defaultRules, defaultRulesOk := d.GetOkExists("default_rules")
-	if defaultRulesOk {
-		params.DefaultRules = sentry.Bool(defaultRules.(bool))
-	}
-
 	tflog.Debug(ctx, "Creating Sentry project", map[string]interface{}{
-		"team":         team,
-		"teams":        teams,
-		"org":          org,
-		"initialTeam":  initialTeam,
-		"defaultRules": params.DefaultRules,
+		"team":        team,
+		"teams":       teams,
+		"org":         org,
+		"initialTeam": initialTeam,
 	})
 	proj, _, err := client.Projects.Create(ctx, org, initialTeam, params)
 	if err != nil {
@@ -186,14 +168,6 @@ func resourceSentryProjectCreate(ctx context.Context, d *schema.ResourceData, me
 		"team":        initialTeam,
 		"org":         org,
 	})
-
-	defaultKey, defaultKeyOk := d.GetOkExists("default_key")
-	if defaultKeyOk && !defaultKey.(bool) {
-		err = removeDefaultKey(ctx, client, org, proj.Slug)
-		if err != nil {
-			return diag.FromErr(err)
-		}
-	}
 
 	d.SetId(proj.Slug)
 	return resourceSentryProjectUpdate(ctx, d, meta)
@@ -413,34 +387,4 @@ func validatePlatform(i interface{}, path cty.Path) diag.Diagnostics {
 		AttributePath: path,
 	})
 	return diagnostics
-}
-
-func removeDefaultKey(ctx context.Context, client *sentry.Client, organizationSlug string, projectSlug string) error {
-	listParams := &sentry.ListCursorParams{}
-
-	for {
-		keys, resp, err := client.ProjectKeys.List(ctx, organizationSlug, projectSlug, listParams)
-		if err != nil {
-			return err
-		}
-
-		for _, key := range keys {
-			if key.Name == "Default" {
-				// Delete the default rule
-				_, err := client.ProjectKeys.Delete(ctx, organizationSlug, projectSlug, key.ID)
-				if err != nil {
-					return err
-				}
-
-				return nil
-			}
-		}
-
-		if resp.Cursor == "" {
-			break
-		}
-		listParams.Cursor = resp.Cursor
-	}
-
-	return nil
 }

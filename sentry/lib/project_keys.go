@@ -2,7 +2,6 @@ package sentry
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"time"
 )
@@ -31,7 +30,7 @@ type ProjectKey struct {
 	Label       string               `json:"label"`
 	Public      string               `json:"public"`
 	Secret      string               `json:"secret"`
-	ProjectID   json.Number          `json:"projectId"`
+	ProjectID   int                  `json:"projectId"`
 	IsActive    bool                 `json:"isActive"`
 	RateLimit   *ProjectKeyRateLimit `json:"rateLimit"`
 	DSN         ProjectKeyDSN        `json:"dsn"`

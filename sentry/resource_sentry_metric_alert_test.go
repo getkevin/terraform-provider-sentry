@@ -4,10 +4,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/getkevin/terraform-provider-sentry/internal/acctest"
-	sentry "github.com/getkevin/terraform-provider-sentry/sentry/lib"
 	"testing"
 
+	"github.com/deste-org/terraform-provider-sentry/sentry/lib"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
@@ -23,7 +23,7 @@ func TestAccSentryMetricAlert_basic(t *testing.T) {
 	check := func(alertName string) resource.TestCheckFunc {
 		return resource.ComposeTestCheckFunc(
 			testAccCheckSentryMetricAlertExists(rn, &alertID),
-			resource.TestCheckResourceAttr(rn, "organization", acctest.TestOrganization),
+			resource.TestCheckResourceAttr(rn, "organization", testOrganization),
 			resource.TestCheckResourceAttr(rn, "project", projectName),
 			resource.TestCheckResourceAttr(rn, "name", alertName),
 			resource.TestCheckResourceAttr(rn, "environment", ""),
@@ -40,9 +40,9 @@ func TestAccSentryMetricAlert_basic(t *testing.T) {
 	}
 
 	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { acctest.PreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		CheckDestroy:             testAccCheckSentryMetricAlertDestroy,
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactories,
+		CheckDestroy:      testAccCheckSentryMetricAlertDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccSentryMetricAlertConfig(teamName, projectName, alertName),
@@ -62,6 +62,8 @@ func TestAccSentryMetricAlert_basic(t *testing.T) {
 }
 
 func testAccCheckSentryMetricAlertDestroy(s *terraform.State) error {
+	client := testAccProvider.Meta().(*sentry.Client)
+
 	for _, rs := range s.RootModule().Resources {
 		if rs.Type != "sentry_metric_alert" {
 			continue
@@ -73,7 +75,7 @@ func testAccCheckSentryMetricAlertDestroy(s *terraform.State) error {
 		}
 
 		ctx := context.Background()
-		alert, resp, err := acctest.SharedClient.MetricAlerts.Get(ctx, org, project, id)
+		alert, resp, err := client.MetricAlerts.Get(ctx, org, project, id)
 		if err == nil {
 			if alert != nil {
 				return errors.New("metric alert still exists")
@@ -103,8 +105,9 @@ func testAccCheckSentryMetricAlertExists(n string, gotAlertID *string) resource.
 		if err != nil {
 			return err
 		}
+		client := testAccProvider.Meta().(*sentry.Client)
 		ctx := context.Background()
-		gotAlert, _, err := acctest.SharedClient.MetricAlerts.Get(ctx, org, project, alertID)
+		gotAlert, _, err := client.MetricAlerts.Get(ctx, org, project, alertID)
 		if err != nil {
 			return err
 		}

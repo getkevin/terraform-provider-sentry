@@ -2,9 +2,10 @@ package sentry
 
 import (
 	"fmt"
-	"github.com/getkevin/terraform-provider-sentry/internal/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"testing"
+
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
 func TestAccSentryDashboardDataSource_basic(t *testing.T) {
@@ -18,7 +19,7 @@ func TestAccSentryDashboardDataSource_basic(t *testing.T) {
 
 		return resource.ComposeTestCheckFunc(
 			testAccCheckSentryDashboardExists(name, &dashboardID),
-			resource.TestCheckResourceAttr(name, "organization", acctest.TestOrganization),
+			resource.TestCheckResourceAttr(name, "organization", testOrganization),
 			resource.TestCheckResourceAttr(name, "title", dashboardTitle),
 			resource.TestCheckResourceAttr(name, "widget.#", "1"),
 			resource.TestCheckTypeSetElemNestedAttrs(name, "widget.*", map[string]string{
@@ -49,8 +50,8 @@ func TestAccSentryDashboardDataSource_basic(t *testing.T) {
 	}
 
 	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { acctest.PreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactories,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccSentryDashboardDataSourceConfig(dashboardTitle),

@@ -4,11 +4,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/getkevin/terraform-provider-sentry/internal/acctest"
-	sentry "github.com/getkevin/terraform-provider-sentry/sentry/lib"
 	"os"
 	"testing"
 
+	"github.com/deste-org/terraform-provider-sentry/sentry/lib"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
@@ -40,9 +40,9 @@ func TestAccSentryOrganization_basic(t *testing.T) {
 	}
 
 	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { acctest.PreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		CheckDestroy:             testAccCheckSentryOrganizationDestroy,
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactories,
+		CheckDestroy:      testAccCheckSentryOrganizationDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccSentryOrganizationConfig(orgName),
@@ -62,13 +62,15 @@ func TestAccSentryOrganization_basic(t *testing.T) {
 }
 
 func testAccCheckSentryOrganizationDestroy(s *terraform.State) error {
+	client := testAccProvider.Meta().(*sentry.Client)
+
 	for _, rs := range s.RootModule().Resources {
 		if rs.Type != "sentry_organization" {
 			continue
 		}
 
 		ctx := context.Background()
-		organization, resp, err := acctest.SharedClient.Organizations.Get(ctx, rs.Primary.ID)
+		organization, resp, err := client.Organizations.Get(ctx, rs.Primary.ID)
 		if err == nil {
 			if organization != nil && *organization.Status.ID == "active" {
 				return errors.New("organization still exists")
@@ -95,8 +97,9 @@ func testAccCheckSentryOrganizationExists(n string, organization *sentry.Organiz
 		}
 
 		org := rs.Primary.ID
+		client := testAccProvider.Meta().(*sentry.Client)
 		ctx := context.Background()
-		gotOrganization, _, err := acctest.SharedClient.Organizations.Get(ctx, org)
+		gotOrganization, _, err := client.Organizations.Get(ctx, org)
 		if err != nil {
 			return err
 		}

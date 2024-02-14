@@ -9,31 +9,27 @@ import (
 // OrganizationMember represents a User's membership to the organization.
 // https://github.com/getsentry/sentry/blob/22.5.0/src/sentry/api/serializers/models/organization_member/response.py#L57-L69
 type OrganizationMember struct {
-	ID           string                     `json:"id"`
-	Email        string                     `json:"email"`
-	Name         string                     `json:"name"`
-	User         User                       `json:"user"`
-	OrgRole      string                     `json:"orgRole"`
-	OrgRoleList  []OrganizationRoleListItem `json:"orgRoleList"`
-	Pending      bool                       `json:"pending"`
-	Expired      bool                       `json:"expired"`
-	Flags        map[string]bool            `json:"flags"`
-	DateCreated  time.Time                  `json:"dateCreated"`
-	InviteStatus string                     `json:"inviteStatus"`
-	InviterName  *string                    `json:"inviterName"`
-	TeamRoleList []TeamRoleListItem         `json:"teamRoleList"`
-	TeamRoles    []TeamRole                 `json:"teamRoles"`
-	Teams        []string                   `json:"teams"`
+	ID           string          `json:"id"`
+	Email        string          `json:"email"`
+	Name         string          `json:"name"`
+	User         User            `json:"user"`
+	Role         string          `json:"role"`
+	RoleName     string          `json:"roleName"`
+	Pending      bool            `json:"pending"`
+	Expired      bool            `json:"expired"`
+	Flags        map[string]bool `json:"flags"`
+	DateCreated  time.Time       `json:"dateCreated"`
+	InviteStatus string          `json:"inviteStatus"`
+	InviterName  *string         `json:"inviterName"`
+	Teams        []string        `json:"teams"`
 }
 
 const (
-	OrganizationRoleBilling string = "billing"
-	OrganizationRoleMember  string = "member"
-	OrganizationRoleManager string = "manager"
-	OrganizationRoleOwner   string = "owner"
-
-	TeamRoleContributor string = "contributor"
-	TeamRoleAdmin       string = "admin"
+	RoleMember  string = "member"
+	RoleBilling string = "billing"
+	RoleAdmin   string = "admin"
+	RoleOwner   string = "owner"
+	RoleManager string = "manager"
 )
 
 // OrganizationMembersService provides methods for accessing Sentry membership API endpoints.
@@ -96,14 +92,9 @@ func (s *OrganizationMembersService) Create(ctx context.Context, organizationSlu
 	return member, resp, nil
 }
 
-type TeamRole struct {
-	TeamSlug string  `json:"teamSlug"`
-	Role     *string `json:"role"`
-}
-
 type UpdateOrganizationMemberParams struct {
-	OrganizationRole string     `json:"role"`
-	TeamRoles        []TeamRole `json:"teamRoles"`
+	Role  string   `json:"role"`
+	Teams []string `json:"teams,omitempty"`
 }
 
 func (s *OrganizationMembersService) Update(ctx context.Context, organizationSlug string, memberID string, params *UpdateOrganizationMemberParams) (*OrganizationMember, *Response, error) {

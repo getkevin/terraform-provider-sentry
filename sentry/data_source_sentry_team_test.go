@@ -1,9 +1,10 @@
 package sentry
 
 import (
-	"github.com/getkevin/terraform-provider-sentry/internal/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"testing"
+
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
 func TestAccSentryTeamDataSource_basic(t *testing.T) {
@@ -14,8 +15,8 @@ func TestAccSentryTeamDataSource_basic(t *testing.T) {
 	var teamID string
 
 	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { acctest.PreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactories,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccSentryTeamDataSourceConfig(teamSlug),

@@ -4,10 +4,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/getkevin/terraform-provider-sentry/internal/acctest"
-	sentry "github.com/getkevin/terraform-provider-sentry/sentry/lib"
 	"testing"
 
+	"github.com/deste-org/terraform-provider-sentry/sentry/lib"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
@@ -20,7 +20,7 @@ func TestAccSentryOrganizationMember_basic(t *testing.T) {
 		var member sentry.OrganizationMember
 		return resource.ComposeTestCheckFunc(
 			testAccCheckSentryOrganizationMemberExists(rn, &member),
-			resource.TestCheckResourceAttr(rn, "organization", acctest.TestOrganization),
+			resource.TestCheckResourceAttr(rn, "organization", testOrganization),
 			resource.TestCheckResourceAttr(rn, "email", memberEmail),
 			resource.TestCheckResourceAttr(rn, "role", role),
 			resource.TestCheckResourceAttrSet(rn, "internal_id"),
@@ -30,9 +30,9 @@ func TestAccSentryOrganizationMember_basic(t *testing.T) {
 	}
 
 	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { acctest.PreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		CheckDestroy:             testAccCheckSentryOrganizationMemberDestroy,
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactories,
+		CheckDestroy:      testAccCheckSentryOrganizationMemberDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccSentryOrganizationMemberConfig(memberEmail, "member"),
@@ -47,13 +47,15 @@ func TestAccSentryOrganizationMember_basic(t *testing.T) {
 }
 
 func testAccCheckSentryOrganizationMemberDestroy(s *terraform.State) error {
+	client := testAccProvider.Meta().(*sentry.Client)
+
 	for _, rs := range s.RootModule().Resources {
 		if rs.Type != "sentry_organization_member" {
 			continue
 		}
 
 		ctx := context.Background()
-		member, resp, err := acctest.SharedClient.OrganizationMembers.Get(
+		member, resp, err := client.OrganizationMembers.Get(
 			ctx,
 			rs.Primary.Attributes["organization"],
 			rs.Primary.ID,
@@ -86,8 +88,9 @@ func testAccCheckSentryOrganizationMemberExists(n string, member *sentry.Organiz
 		if err != nil {
 			return err
 		}
+		client := testAccProvider.Meta().(*sentry.Client)
 		ctx := context.Background()
-		gotMember, _, err := acctest.SharedClient.OrganizationMembers.Get(ctx, org, id)
+		gotMember, _, err := client.OrganizationMembers.Get(ctx, org, id)
 
 		if err != nil {
 			return err

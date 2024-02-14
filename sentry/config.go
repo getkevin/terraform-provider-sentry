@@ -1,13 +1,15 @@
-package sentryclient
+package sentry
 
 import (
 	"context"
-	sentry "github.com/getkevin/terraform-provider-sentry/sentry/lib"
 	"net/http"
 	"sync"
 	"time"
 
+	"github.com/deste-org/terraform-provider-sentry/sentry/lib"
 	"github.com/hashicorp/go-retryablehttp"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"golang.org/x/oauth2"
 	"golang.org/x/sync/semaphore"
 )
@@ -21,7 +23,9 @@ type Config struct {
 }
 
 // Client to connect to Sentry.
-func (c *Config) Client(ctx context.Context) (*sentry.Client, error) {
+func (c *Config) Client(ctx context.Context) (interface{}, diag.Diagnostics) {
+	tflog.Info(ctx, "Instantiating Sentry client...")
+
 	// Authentication
 	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: c.Token})
 	oauth2HTTPClient := oauth2.NewClient(ctx, ts)
@@ -54,7 +58,7 @@ func (c *Config) Client(ctx context.Context) (*sentry.Client, error) {
 	} else {
 		cl, err = sentry.NewOnPremiseClient(c.BaseURL, semaphoreHTTPClient)
 		if err != nil {
-			return nil, err
+			return nil, diag.FromErr(err)
 		}
 	}
 

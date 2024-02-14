@@ -4,10 +4,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/getkevin/terraform-provider-sentry/internal/acctest"
-	sentry "github.com/getkevin/terraform-provider-sentry/sentry/lib"
 	"testing"
 
+	"github.com/deste-org/terraform-provider-sentry/sentry/lib"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
@@ -21,7 +21,7 @@ func TestAccSentryDashboard_basic(t *testing.T) {
 	check := func(dashboardTitle string) resource.TestCheckFunc {
 		return resource.ComposeTestCheckFunc(
 			testAccCheckSentryDashboardExists(rn, &dashboardID),
-			resource.TestCheckResourceAttr(rn, "organization", acctest.TestOrganization),
+			resource.TestCheckResourceAttr(rn, "organization", testOrganization),
 			resource.TestCheckResourceAttr(rn, "title", dashboardTitle),
 			resource.TestCheckResourceAttr(rn, "widget.#", "1"),
 			resource.TestCheckResourceAttr(rn, "widget.0.title", "Custom Widget"),
@@ -44,8 +44,9 @@ func TestAccSentryDashboard_basic(t *testing.T) {
 	}
 
 	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { acctest.PreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactories,
+		CheckDestroy:      testAccCheckSentryIssueAlertDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccSentryDashboardConfig(dashboardTitle),
@@ -79,8 +80,9 @@ func testAccCheckSentryDashboardExists(n string, dashboardID *string) resource.T
 		if err != nil {
 			return err
 		}
+		client := testAccProvider.Meta().(*sentry.Client)
 		ctx := context.Background()
-		gotDashboard, _, err := acctest.SharedClient.Dashboards.Get(ctx, org, id)
+		gotDashboard, _, err := client.Dashboards.Get(ctx, org, id)
 		if err != nil {
 			return err
 		}

@@ -142,7 +142,7 @@ func TestProjectsService_List(t *testing.T) {
 	})
 
 	ctx := context.Background()
-	projects, _, err := client.Projects.List(ctx, nil)
+	projects, _, err := client.Projects.List(ctx)
 	assert.NoError(t, err)
 
 	expectedOrganization := Organization{

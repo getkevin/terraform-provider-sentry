@@ -2,10 +2,10 @@ package sentry
 
 import (
 	"fmt"
-	"github.com/getkevin/terraform-provider-sentry/internal/acctest"
 	"regexp"
 	"testing"
 
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
@@ -16,8 +16,8 @@ func TestAccSentryKeyDataSource_basic(t *testing.T) {
 	dn := "data.sentry_key.test"
 
 	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { acctest.PreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		PreCheck:  func() { testAccPreCheck(t) },
+		Providers: testAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccSentryKeyDataSourceConfig(teamName, projectName),
@@ -43,8 +43,8 @@ func TestAccSentryKeyDataSource_first(t *testing.T) {
 	dn := "data.sentry_key.test"
 
 	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { acctest.PreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		PreCheck:  func() { testAccPreCheck(t) },
+		Providers: testAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccSentryKeyDataSourceConfig_first(teamName, projectName),
@@ -64,8 +64,8 @@ func TestAccSentryKeyDataSource_name(t *testing.T) {
 	dn := "data.sentry_key.test"
 
 	resource.Test(t, resource.TestCase{
-		PreCheck:                 func() { acctest.PreCheck(t) },
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+		PreCheck:  func() { testAccPreCheck(t) },
+		Providers: testAccProviders,
 		Steps: []resource.TestStep{
 			{
 				Config: testAccSentryKeyDataSourceConfig_name(teamName, projectName, keyName),

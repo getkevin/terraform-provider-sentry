@@ -47,8 +47,6 @@ type Organization struct {
 	IsDefault            *bool                       `json:"isDefault,omitempty"`
 	DefaultRole          *string                     `json:"defaultRole,omitempty"`
 	AvailableRoles       []OrganizationAvailableRole `json:"availableRoles,omitempty"`
-	OrgRoleList          []OrganizationRoleListItem  `json:"orgRoleList,omitempty"`
-	TeamRoleList         []TeamRoleListItem          `json:"teamRoleList,omitempty"`
 	OpenMembership       *bool                       `json:"openMembership,omitempty"`
 	AllowSharedIssues    *bool                       `json:"allowSharedIssues,omitempty"`
 	EnhancedPrivacy      *bool                       `json:"enhancedPrivacy,omitempty"`
