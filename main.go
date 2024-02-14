@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 
-	"github.com/deste-org/terraform-provider-sentry/sentry"
+	"github.com/getkevin/terraform-provider-sentry/sentry"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/plugin"
 )
 

@@ -1,4 +1,4 @@
-module github.com/deste-org/terraform-provider-sentry
+module github.com/getkevin/terraform-provider-sentry
 
 go 1.19
 

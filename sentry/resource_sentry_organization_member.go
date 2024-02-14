@@ -4,7 +4,7 @@ import (
 	"context"
 	"sort"
 
-	"github.com/deste-org/terraform-provider-sentry/sentry/lib"
+	"github.com/getkevin/terraform-provider-sentry/sentry/lib"
 	"github.com/hashicorp/go-multierror"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"

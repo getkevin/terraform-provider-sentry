@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/deste-org/terraform-provider-sentry/sentry/lib"
+	"github.com/getkevin/terraform-provider-sentry/sentry/lib"
 	"github.com/hashicorp/go-cty/cty"
 	"github.com/hashicorp/go-multierror"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
